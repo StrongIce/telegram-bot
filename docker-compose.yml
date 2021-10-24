@@ -1,0 +1,9 @@
+version: "3"
+services:
+  jira-bot:
+    image: jira/bot:v2
+    network_mode: "host"
+    volumes:
+      - /opt/bot/log.txt:/jira-bot/Logs/log.txt 
+      - /opt/bot/helpdesk.db:/jira-bot/DB/helpdesk.db
+    container_name: jira-telegram-bot

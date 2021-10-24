@@ -1,0 +1,6 @@
+asyncio
+aiogram
+ldap3
+jira
+bonsai
+gevent
