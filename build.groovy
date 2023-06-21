@@ -20,7 +20,7 @@ pipeline {
         stage('Hello') {
             steps {
                 echo 'Hello World'
-                echo ${env.JOB_NAME}
+                echo "${env.JOB_NAME}"
             }
         }
 
