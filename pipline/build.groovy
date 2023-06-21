@@ -1,5 +1,17 @@
 library('test-library')
 
+properties([
+    parameters([
+        string(
+            name: 'project',
+            defaultValue: 'telegram-bot',
+            description: 'Project name'
+        )
+    ]),
+])
+
+
+
 pipeline {
     agent any
 
