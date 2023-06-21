@@ -1,3 +1,5 @@
+library('test-library')
+
 pipeline {
     agent any
 
