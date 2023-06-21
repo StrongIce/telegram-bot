@@ -1,4 +1,4 @@
-void buildStatus(String message, String state) {
+void call(String message, String state) {
   step([
       $class: "GitHubCommitStatusSetter",
       reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/StrongIce/telegram-bot"],
