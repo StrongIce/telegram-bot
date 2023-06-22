@@ -28,9 +28,6 @@ pipeline {
             steps {
                 script {
                     sh 'echo $pwd'
-                    fieldsToUpdate = 'image'
-                    valuesToUpdate = 'tutut'
-                    servicesToUpdate = dockerServicesByProject[params.project]
                 }
             }
         }
@@ -47,6 +44,9 @@ pipeline {
                         // Если список веток содержит main или master -
                         // вызываем автоматическое обновление файла
                         // envs/dev-env/.env
+                        fieldsToUpdate = 'image'
+                        valuesToUpdate = 'tutut'
+                        servicesToUpdate = dockerServicesByProject[params.project]
                         if (CURRENT_BRANCH_NAME =~ /(.*\/main)|(^main)(?=\s|$)/) {
                             updateComposeFile = '.env'
                         }
