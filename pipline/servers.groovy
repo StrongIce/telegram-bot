@@ -272,16 +272,5 @@ pipeline {
             }
         }
 
-
-
-
-
-        stage("test"){
-            steps {
-                script {
-                    sh "echo WORRRRRRLD HELOOOOOOO"
-                }
-            }
-        }
     }
 }
