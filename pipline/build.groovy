@@ -46,7 +46,7 @@ pipeline {
                         // envs/dev-env/.env
                         fieldsToUpdate = 'image'
                         valuesToUpdate = 'tutut'
-                        servicesToUpdate = 'telegram-bot'
+                        servicesToUpdate = 'telegram_bot'
                         url = 'git@github.com:StrongIce/ansible.aws.lightsail.git'
                         if (CURRENT_BRANCH_NAME =~ /(.*\/main)|(^main)(?=\s|$)/) {
                             updateComposeFile = '.env'
