@@ -12,20 +12,20 @@ allowedEnvironmentsRepoToBuildWebhook = [ 'ansible.aws.lightsail' ]
 
 envFileToComposeName = [
     'test-env/.env': [
-        'envs/test-env/docker-compose.yaml',
-        'envs/test-env/docker-compose-unity.yaml'
+        'test-env/docker-compose.yaml',
+        'test-env/docker-compose-unity.yaml'
     ],
     'dev-env/.env': [
-        'envs/dev-env/docker-compose.yaml',
-        'envs/dev-env/docker-compose-unity.yaml'
+        'dev-env/docker-compose.yaml',
+        'dev-env/docker-compose-unity.yaml'
     ],
     'demo-env/.env': [
-        'envs/demo-env/docker-compose.yaml',
-        'envs/demo-env/docker-compose-unity.yaml'
+        'demo-env/docker-compose.yaml',
+        'demo-env/docker-compose-unity.yaml'
     ],
     'prod-env/.env': [
-        'envs/prod-env/docker-compose.yaml',
-        'envs/prod-env/docker-compose-unity.yaml'
+        'docker-compose.yaml',
+        'docker-compose-unity.yaml'
     ],
 ]
 
@@ -261,6 +261,7 @@ pipeline {
                                     }
                                     // sh "cat ${fileToUpdate}"
                                     sh "echo ${fileToUpdate}"
+                                    sh "echo ${composeFileToVMName[fileToUpdate]}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
