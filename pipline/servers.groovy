@@ -23,21 +23,9 @@ allowedEnvironmentsRepoToBuildWebhook = [ 'ansible.aws.lightsail' ]
 
 // Сопоставление env-файла compose файлам
 envFileToComposeName = [
-    'envs/test-env/.env': [
-        'envs/test-env/docker-compose.yaml',
-        'envs/test-env/docker-compose-unity.yaml'
-    ],
-    'envs/dev-env/.env': [
-        'envs/dev-env/docker-compose.yaml',
-        'envs/dev-env/docker-compose-unity.yaml'
-    ],
-    'envs/demo-env/.env': [
-        'envs/demo-env/docker-compose.yaml',
-        'envs/demo-env/docker-compose-unity.yaml'
-    ],
-    'envs/prod-env/.env': [
-        'envs/prod-env/docker-compose.yaml',
-        'envs/prod-env/docker-compose-unity.yaml'
+    '.env': [
+        'docker-compose.yaml',
+        'docker-compose-unity.yaml'
     ],
 ]
 
@@ -209,6 +197,73 @@ pipeline {
                 }
             }
         }
+
+
+        stage('Processing files') {
+            steps {
+                script {
+                    // Получаем список коммитов
+                    if (env.GITHUB_COMMITS == null) {
+                        currentBuild.result = 'SUCCESS'
+                        println 'Nothing to do'
+                        return
+                    }
+                    cmts = readJSON(text: env.GITHUB_COMMITS)
+                    if (cmts.size() == 0) {
+                        currentBuild.result = 'SUCCESS'
+                        println 'Nothing to do'
+                        return
+                    }
+                    dir(repoDir) {
+                        for (commit in cmts) {
+                            files = commit['modified']
+                            /* groovylint-disable-next-line NestedForLoop */
+                            for (f in files) {
+                                filesToUpdate = []
+                                // Если обновили env-файл - обрабатываем его файлы
+                                if (envFileToComposeName[f]) {
+                                    filesToUpdate = envFileToComposeName[f]
+                                // Если обновили один из compose-файлов -
+                                // обрабатываем его, если он отслеживается
+                                } else if (composeFileToVMName[f]) {
+                                    filesToUpdate = [f]
+                                }
+                                /* groovylint-disable-next-line NestedForLoop */
+                                for (fileToUpdate in filesToUpdate) {
+                                    println("Modified file ${fileToUpdate}")
+                                    // ssh на сервер привязанный к compose файлу
+                                    // и выполнение там команды
+                                    // docker system prune
+                                    // sshagent(credentials: ['yc-user-ssh-key']) {
+                                    //     sh """
+                                    //         ssh -o StrictHostKeyChecking=no -l yc-user \
+                                    //         \$(${getYCPath()} compute instance get ${composeFileToVMName[fileToUpdate]} --format json | jq -Mcr '.network_interfaces[0].primary_v4_address.one_to_one_nat.address') \
+                                    //         'sudo docker system prune -a -f'
+                                    //     """
+                                    // }
+                                    // Обновление compose-файла для сервера
+                                    /* groovylint-disable-next-line NestedForLoop */
+                                    envFileToComposeName.each { env, cfiles ->
+                                        cfiles.each { cfile ->
+                                            if (cfile == fileToUpdate) {
+                                                sh "a=\$(mktemp) && export \$(cat ${env} | xargs) && envsubst < ${cfile} > \${a} && mv \${a} ${cfile}"
+                                            }
+                                        }
+                                    }
+                                    sh "echo update ${composeFileToVMName[fileToUpdate]}"
+                                    // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
+                                    // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
 
         stage("test"){
             steps {
