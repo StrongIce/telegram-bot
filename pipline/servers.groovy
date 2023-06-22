@@ -22,11 +22,10 @@ allowedBranchesToBuildWebhook = [ 'main' ]
 allowedEnvironmentsRepoToBuildWebhook = [ 'ansible.aws.lightsail' ]
 
 // Сопоставление env-файла compose файлам
-envFileToComposeName = [
-    '.env': [
-        'docker-compose.yaml',
-        'docker-compose-unity.yaml'
-    ],
+fileForUpdate = [
+    '.env',
+    'docker-compose.yaml',
+    'docker-compose-unity.yaml'    
 ]
 
 // Сопоставление compose-файла имени сервера, на котором он развернут
@@ -225,13 +224,14 @@ pipeline {
                             for (f in files) {
                                 filesToUpdate = []
                                 // Если обновили env-файл - обрабатываем его файлы
-                                if (envFileToComposeName[f]) {
-                                    filesToUpdate = envFileToComposeName[f]
+                                if (fileForUpdate[f]) {
+                                    filesToUpdate = fileForUpdate[f]
                                 // Если обновили один из compose-файлов -
                                 // обрабатываем его, если он отслеживается
-                                } else if (envFileToComposeName[f]) {
-                                    filesToUpdate = [f]
-                                }
+                                } 
+                                // else if (envFileToComposeName[f]) {
+                                //     filesToUpdate = [f]
+                                // }
                                 /* groovylint-disable-next-line NestedForLoop */
                                 for (fileToUpdate in filesToUpdate) {
                                     println("Modified file ${fileToUpdate}")
@@ -255,7 +255,7 @@ pipeline {
                                         }
                                     }
                                     // sh "cat ${fileToUpdate}"
-                                    sh "echo ${envFileToComposeName}"
+                                    sh "echo ${fileForUpdate}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
