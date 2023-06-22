@@ -205,7 +205,7 @@ pipeline {
             buildStatus("Build succeeded", "SUCCESS", env.GITHUB_REPO_NAME);
         }
         failure {
-            buildStatus("Build failed", "FAILURE", env.GITHUB_REPO_NAME;
+            buildStatus("Build failed", "FAILURE", env.GITHUB_REPO_NAME);
         }
     }
 }
