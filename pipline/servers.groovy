@@ -251,9 +251,8 @@ pipeline {
                                             }
                                         }
                                     }
-                                    params.environment_s = env.GITHUB_REPO_NAME
                                     // sh "cat ${fileToUpdate}"
-                                    sh "echo ${params.environment_s}"
+                                    sh "echo ${env.GITHUB_COMMITS}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
