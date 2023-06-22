@@ -31,18 +31,22 @@ envFileToComposeName = [
 
 // Сопоставление compose-файла имени сервера, на котором он развернут
 composeFileToVMName = [
-    'docker-compose.yaml': 'test-backend-service',
-    'docker-compose-unity.yaml': 'test-unity-service',
-    'envs/dev-env/docker-compose.yaml': 'dev-server',
-    'envs/dev-env/docker-compose-unity.yaml': 'dev-server-unity',
-    'envs/demo-env/docker-compose.yaml': 'demo-unity-server',
-    'envs/demo-env/docker-compose-unity.yaml': 'demo-server-unity',
-    'envs/prod-env/docker-compose.yaml': 'prod-server',
-    'envs/prod-env/docker-compose-unity.yaml': 'prod-server-unity',
+    'docker-compose.yaml',
+    'docker-compose-unity.yaml',
+    // 'envs/dev-env/docker-compose.yaml': 'dev-server',
+    // 'envs/dev-env/docker-compose-unity.yaml': 'dev-server-unity',
+    // 'envs/demo-env/docker-compose.yaml': 'demo-unity-server',
+    // 'envs/demo-env/docker-compose-unity.yaml': 'demo-server-unity',
+    // 'envs/prod-env/docker-compose.yaml': 'prod-server',
+    // 'envs/prod-env/docker-compose-unity.yaml': 'prod-server-unity',
 ]
 
-user = 'auto'
+environmentRepositories = [
+    'prod': 'ansible.aws.lightsail'
+]
 
+
+user = 'auto'
 
 
 pipeline {
@@ -225,7 +229,7 @@ pipeline {
                                     filesToUpdate = envFileToComposeName[f]
                                 // Если обновили один из compose-файлов -
                                 // обрабатываем его, если он отслеживается
-                                } else if (composeFileToVMName[f]) {
+                                } else if (envFileToComposeName[f]) {
                                     filesToUpdate = [f]
                                 }
                                 /* groovylint-disable-next-line NestedForLoop */
