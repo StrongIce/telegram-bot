@@ -6,20 +6,12 @@ versionRef = 'unknown'
 // Is build triggered by webhook.
 triggeredByWebhook = false
 
-properties([
-    parameters([
-        string(
-            name: 'environment_s',
-            defaultValue: '',
-            description: 'Project name'
-        ),
-    ]),
-])
-
 repoDir = 'automatization'
 
 allowedBranchesToBuildWebhook = [ 'main' ]
 allowedEnvironmentsRepoToBuildWebhook = [ 'ansible.aws.lightsail' ]
+composeFileForUpdates = [ 'docker-compose.yaml', 'docker-compose-unity.yaml']
+
 
 // Сопоставление env-файла compose файлам
 envFileToComposeName = [
@@ -28,6 +20,8 @@ envFileToComposeName = [
         'docker-compose-unity.yaml'
     ],
 ]
+
+
 
 // Сопоставление compose-файла имени сервера, на котором он развернут
 composeFileToVMName = [
@@ -229,9 +223,12 @@ pipeline {
                                     filesToUpdate = envFileToComposeName[f]
                                 // Если обновили один из compose-файлов -
                                 // обрабатываем его, если он отслеживается
-                                } else if (composeFileToVMName[f]) {
+                                } else if (f in composeFileForUpdates) {
                                     filesToUpdate = [f]
                                 }
+                                // else if (composeFileToVMName[f]) {
+                                //     filesToUpdate = [f]
+                                // }
                                 /* groovylint-disable-next-line NestedForLoop */
                                 for (fileToUpdate in filesToUpdate) {
                                     println("Modified file ${fileToUpdate}")
