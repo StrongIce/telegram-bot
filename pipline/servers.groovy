@@ -47,7 +47,7 @@ properties([
         string(
             name: 'environment',
             defaultValue: env.GITHUB_REPO_NAME,
-            description: 'Project name'
+            description: 'environment repo'
         ),
     ]),
 ])
@@ -138,10 +138,10 @@ pipeline {
                     if (env.GITHUB_REF) {
                         // Определяем ветку/тег с которого собирается
                         parsedRef = parseGitRef(env.GITHUB_REF)
-                        parsedRepo = env.GITHUB_REPO_NAME
+                        parsedRepoName = env.GITHUB_REPO_NAME
                         // Если сборка с ветки и ветка не находится в
                         // списке разрешенных - останавливаем сборку
-                        if (!(parsedRef in allowedBranchesToBuildWebhook) && !(parsedRepo in allowedEnvironmentsRepoToBuildWebhook) && !(isTagRef(env.GITHUB_REF))) {
+                        if (!(parsedRef in allowedBranchesToBuildWebhook) && !(parsedRepoName in allowedEnvironmentsRepoToBuildWebhook) && !(isTagRef(env.GITHUB_REF))) {
                             buildAborted = true
                             buildAbortedMsg = parsedRef
                         }
