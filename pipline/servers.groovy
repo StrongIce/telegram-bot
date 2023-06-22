@@ -102,7 +102,7 @@ pipeline {
             ],
             regexpFilterExpression: '',
             regexpFilterText: '',
-            token: 'automatization',
+            token: 'tzenguldinov',
             tokenCredentialId: ''
         )
     }
