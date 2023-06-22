@@ -55,7 +55,7 @@ composeFileToVMName = [
 
 user = 'auto'
 
-params.project = env.GITHUB_REPO_NAME
+
 
 pipeline {
     agent {
@@ -112,6 +112,9 @@ pipeline {
         skipDefaultCheckout()
         buildDiscarder(logRotator(numToKeepStr: '100'))
     }
+    
+    params.project = env.GITHUB_REPO_NAME
+
     stages {
         // Этап, определяющий основные параметры сборки - кто и что запустил
         stage('Check params') {
