@@ -9,7 +9,7 @@ triggeredByWebhook = false
 properties([
     parameters([
         string(
-            name: 'environment',
+            name: 'environment_s',
             defaultValue: '',
             description: 'Project name'
         ),
