@@ -26,10 +26,12 @@ pipeline {
 
         stage('Hello') {
             steps {
-                echo 'Hello World'
-                fieldsToUpdate = 'image'
-                valuesToUpdate = 'tutut'
-                servicesToUpdate = dockerServicesByProject[params.project]
+                script {
+                    sh 'echo $pwd'
+                    fieldsToUpdate = 'image'
+                    valuesToUpdate = 'tutut'
+                    servicesToUpdate = dockerServicesByProject[params.project]
+                }
             }
         }
 
