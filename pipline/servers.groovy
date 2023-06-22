@@ -255,7 +255,7 @@ pipeline {
                                         }
                                     }
                                     // sh "cat ${fileToUpdate}"
-                                    sh "echo ${fileForUpdate}"
+                                    sh "cat ${fileForUpdate}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
