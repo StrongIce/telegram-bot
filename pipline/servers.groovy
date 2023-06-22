@@ -229,7 +229,7 @@ pipeline {
                                     filesToUpdate = envFileToComposeName[f]
                                 // Если обновили один из compose-файлов -
                                 // обрабатываем его, если он отслеживается
-                                } else if (envFileToComposeName.[f]) {
+                                } else if (envFileToComposeName[f]) {
                                     filesToUpdate = [f]
                                 }
                                 /* groovylint-disable-next-line NestedForLoop */
