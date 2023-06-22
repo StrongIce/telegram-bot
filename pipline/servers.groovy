@@ -10,6 +10,10 @@ allowedBranchesToBuildWebhook = [ 'main' ]
 allowedEnvironmentsRepoToBuildWebhook = [ 'ansible.aws.lightsail' ]
 // Сопоставление env-файла compose файлам
 
+repositoryKeyFile = [
+    'ansible.aws.lightsail': 'ansible.aws.lightsail-ssh'
+]
+
 envFileToComposeName = [
     'test-env/.env': [
         'test-env/docker-compose.yaml',
@@ -198,7 +202,7 @@ pipeline {
                             ([$class: 'GitSCM',
                                 branches: [[ name: versionRef ]],
                                 userRemoteConfigs: [[
-                                    credentialsId: 'ansible.aws.lightsail-ssh',
+                                    credentialsId: "${repositoryKeyFile[env.GITHUB_REPO_NAME]}",
                                     url: "git@github.com:StrongIce/${params.environment}"
                                 ]]
                             ])
