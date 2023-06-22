@@ -89,7 +89,7 @@ pipeline {
             steps {
                 script {
                     dir(repoDir) {
-                        sshagent() {
+                        sshagent(credentials: [automatizationSSHSecret]) {
                             // Клонирование/пулл изменений проекта Automatization
                             sh "git clone ${params.repo_url} ."
                             // Ставим автора коммита как jenkins
