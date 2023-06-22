@@ -31,8 +31,8 @@ envFileToComposeName = [
 
 // Сопоставление compose-файла имени сервера, на котором он развернут
 composeFileToVMName = [
-    'envs/test-env/docker-compose.yaml': 'test-backend-service',
-    'envs/test-env/docker-compose-unity.yaml': 'test-unity-service',
+    'docker-compose.yaml': 'test-backend-service',
+    'docker-compose-unity.yaml': 'test-unity-service',
     'envs/dev-env/docker-compose.yaml': 'dev-server',
     'envs/dev-env/docker-compose-unity.yaml': 'dev-server-unity',
     'envs/demo-env/docker-compose.yaml': 'demo-unity-server',
