@@ -199,7 +199,26 @@ pipeline {
                 }
             }
         }
+
+        stage('SCM') {
+            steps {
+                script {
+                    dir(repoDir) {
+                        checkout \
+                            ([$class: 'GitSCM',
+                                branches: [[ name: versionRef ]],
+                                userRemoteConfigs: [[
+                                    credentialsId: 'ansible.aws.lightsail-ssh',
+                                    url: 'git@github.com:StrongIce/ansible.aws.lightsail.git'
+                                ]]
+                            ])
+                    }
+                }
+            }
+        }
+
     }
+
     post {
         success {
             buildStatus("Build succeeded", "SUCCESS", env.GITHUB_REPO_NAME);
