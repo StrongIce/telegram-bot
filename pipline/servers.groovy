@@ -247,13 +247,13 @@ pipeline {
                                     // ssh на сервер привязанный к compose файлу
                                     // и выполнение там команды
                                     // docker system prune
-                                    // sshagent(credentials: ['yc-user-ssh-key']) {
-                                    //     sh """
-                                    //         ssh -o StrictHostKeyChecking=no -l yc-user \
-                                    //         \$(${getYCPath()} compute instance get ${composeFileToVMName[fileToUpdate]} --format json | jq -Mcr '.network_interfaces[0].primary_v4_address.one_to_one_nat.address') \
-                                    //         'sudo docker system prune -a -f'
-                                    //     """
-                                    // }
+                                    sshagent(credentials: ['yc-user-ssh-key']) {
+                                        sh """
+                                            ssh -o StrictHostKeyChecking=no -l yc-user \
+                                            \$(${getYCPath()} compute instance get ${composeFileToVMName[fileToUpdate]} --format json | jq -Mcr '.network_interfaces[0].primary_v4_address.one_to_one_nat.address') \
+                                            'sudo docker system prune -a -f'
+                                        """
+                                    }
                                     // Обновление compose-файла для сервера
                                     /* groovylint-disable-next-line NestedForLoop */
                                     envFileToComposeName.each { env, updateComposeFiles ->
@@ -263,8 +263,8 @@ pipeline {
                                             }
                                         }
                                     }
-                                    sh "echo ${env.GITHUB_REPO_NAME}"
-                                    // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
+                                    // sh "echo ${env.GITHUB_REPO_NAME}"
+                                    sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
                             }
