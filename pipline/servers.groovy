@@ -218,7 +218,4 @@ pipeline {
             }
         }
     }
-
-    post {
-    }
 }
