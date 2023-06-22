@@ -209,7 +209,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage("test"){
             steps {
                 script {
@@ -220,11 +220,5 @@ pipeline {
     }
 
     post {
-        success {
-            buildStatus("Build succeeded", "SUCCESS", env.GITHUB_REPO_NAME);
-        }
-        failure {
-            buildStatus("Build failed", "FAILURE", env.GITHUB_REPO_NAME);
-        }
     }
 }
