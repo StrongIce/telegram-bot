@@ -1,0 +1,1 @@
+Function returns yandex registry cr.yandex

@@ -1,0 +1,2 @@
+Function return date string with format, referenced by format parameter.
+Default format is 'yyyy_MM_dd'
