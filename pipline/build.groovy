@@ -17,9 +17,52 @@ dockerServicesByProject = [
 
 pipeline {
     agent any
-
     triggers {
-        githubPush()
+        GenericTrigger(
+            causeString: 'Generic Cause',
+            genericVariables: [
+                [
+                    defaultValue: '',
+                    key: 'GITHUB_REF',
+                    regexpFilter: '',
+                    value: '$.ref'
+                ],
+                [
+                    defaultValue: '',
+                    key: 'GITHUB_COMMIT_AUTHOR_NAME',
+                    regexpFilter: '',
+                    value: '$.head_commit.author.name'
+                ],
+                [
+                    defaultValue: '',
+                    key: 'GITHUB_COMMIT_AUTHOR_EMAIL',
+                    regexpFilter: '',
+                    value: '$.head_commit.author.email'
+                ],
+                [
+                    defaultValue: '',
+                    key: 'GITHUB_COMMIT_HASH',
+                    regexpFilter: '',
+                    value: '$.head_commit.id'
+                ],
+                [
+                    defaultValue: '',
+                    key: 'GITHUB_REPO_NAME',
+                    regexpFilter: '',
+                    value: '$.repository.name'
+                ],
+                [
+                    defaultValue: '[]',
+                    key: 'GITHUB_COMMITS',
+                    regexpFilter: '',
+                    value: '$.commits'
+                ]
+            ],
+            regexpFilterExpression: '',
+            regexpFilterText: '',
+            token: 'tzhenguldinov',
+            tokenCredentialId: ''
+        )
     }
 
     stages {
@@ -28,10 +71,10 @@ pipeline {
             steps {
                 script {
                     sh 'echo $pwd'
+                    sh "echo ${env.GITHUB_REPO_NAME}"
                 }
             }
         }
-
 
         stage('Update compose') {
             steps {
