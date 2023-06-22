@@ -55,6 +55,8 @@ composeFileToVMName = [
 
 user = 'auto'
 
+params.project = env.GITHUB_REPO_NAME
+
 pipeline {
     agent {
         label 'master'
