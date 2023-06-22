@@ -47,7 +47,7 @@ pipeline {
                         fieldsToUpdate = 'image'
                         valuesToUpdate = 'tutut'
                         servicesToUpdate = dockerServicesByProject[params.project]
-                        url = 'git@github.com:StrongIce/ansible.aws.lightsail.git'
+                        url = 'https://github.com/StrongIce/ansible.aws.lightsail.git'
                         if (CURRENT_BRANCH_NAME =~ /(.*\/main)|(^main)(?=\s|$)/) {
                             updateComposeFile = '.env'
                         }
