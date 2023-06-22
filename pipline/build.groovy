@@ -6,7 +6,12 @@ properties([
             name: 'project',
             defaultValue: 'telegram-bot',
             description: 'Project name'
-        )
+        ),
+        string(
+            name: 'environment',
+            defaultValue: '',
+            description: 'Project name'
+        ),
     ]),
 ])
 
