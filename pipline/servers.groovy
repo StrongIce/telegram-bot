@@ -223,7 +223,7 @@ pipeline {
                                     filesToUpdate = envFileToComposeName[f]
                                 // Если обновили один из compose-файлов -
                                 // обрабатываем его, если он отслеживается
-                                } else if (f in composeFileForUpdates) {
+                                } else if (f in envFileToComposeName['.env']) {
                                     filesToUpdate = [f]
                                 }
                                 // else if (composeFileToVMName[f]) {
