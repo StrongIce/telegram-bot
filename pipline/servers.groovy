@@ -247,7 +247,7 @@ pipeline {
                                     // }
                                     // Обновление compose-файла для сервера
                                     /* groovylint-disable-next-line NestedForLoop */
-                                    envFileToComposeName.each { env, cfiles ->
+                                    fileForUpdate.each { env, cfiles ->
                                         cfiles.each { cfile ->
                                             if (cfile == fileToUpdate) {
                                                 sh "a=\$(mktemp) && export \$(cat ${env} | xargs) && envsubst < ${cfile} > \${a} && mv \${a} ${cfile}"
