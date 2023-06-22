@@ -9,28 +9,38 @@ repoDir = 'automatization'
 allowedBranchesToBuildWebhook = [ 'main' ]
 allowedEnvironmentsRepoToBuildWebhook = [ 'ansible.aws.lightsail' ]
 // Сопоставление env-файла compose файлам
+
 envFileToComposeName = [
-    '.env': [
-        'docker-compose.yaml',
-        'docker-compose-unity.yaml'
+    'test-env/.env': [
+        'envs/test-env/docker-compose.yaml',
+        'envs/test-env/docker-compose-unity.yaml'
+    ],
+    'dev-env/.env': [
+        'envs/dev-env/docker-compose.yaml',
+        'envs/dev-env/docker-compose-unity.yaml'
+    ],
+    'demo-env/.env': [
+        'envs/demo-env/docker-compose.yaml',
+        'envs/demo-env/docker-compose-unity.yaml'
+    ],
+    'prod-env/.env': [
+        'envs/prod-env/docker-compose.yaml',
+        'envs/prod-env/docker-compose-unity.yaml'
     ],
 ]
 
 // Сопоставление compose-файла имени сервера, на котором он развернут
 composeFileToVMName = [
-    'docker-compose.yaml': 'd',
-    'docker-compose-unity.yaml': 'd',
-    // 'envs/dev-env/docker-compose.yaml': 'dev-server',
-    // 'envs/dev-env/docker-compose-unity.yaml': 'dev-server-unity',
-    // 'envs/demo-env/docker-compose.yaml': 'demo-unity-server',
-    // 'envs/demo-env/docker-compose-unity.yaml': 'demo-server-unity',
-    // 'envs/prod-env/docker-compose.yaml': 'prod-server',
-    // 'envs/prod-env/docker-compose-unity.yaml': 'prod-server-unity',
+    'test-env/docker-compose.yaml': 'test-backend-service',
+    'test-env/docker-compose-unity.yaml': 'test-unity-service',
+    'dev-env/docker-compose.yaml': 'dev-server',
+    'dev-env/docker-compose-unity.yaml': 'dev-server-unity',
+    'demo-env/docker-compose.yaml': 'demo-unity-server',
+    'demo-env/docker-compose-unity.yaml': 'demo-server-unity',
+    'prod-env/docker-compose.yaml': 'prod-server',
+    'prod-env/docker-compose-unity.yaml': 'prod-server-unity',
 ]
 
-environmentRepositories = [
-    'prod': 'ansible.aws.lightsail'
-]
 
 properties([
     parameters([
@@ -189,7 +199,7 @@ pipeline {
                                 branches: [[ name: versionRef ]],
                                 userRemoteConfigs: [[
                                     credentialsId: 'ansible.aws.lightsail-ssh',
-                                    url: 'git@github.com:StrongIce/ansible.aws.lightsail.git'
+                                    url: "git@github.com:StrongIce/${params.environment}"
                                 ]]
                             ])
                     }
@@ -215,17 +225,17 @@ pipeline {
                     }
                     dir(repoDir) {
                         for (commit in commits) {
-                            files = commit['modified']
+                            updatedFiles = commit['modified']
                             /* groovylint-disable-next-line NestedForLoop */
-                            for (f in files) {
+                            for (updatedFile in updatedFiles) {
                                 filesToUpdate = []
                                 // Если обновили env-файл - обрабатываем его файлы
-                                if (envFileToComposeName[f]) {
-                                    filesToUpdate = envFileToComposeName[f]
+                                if (envFileToComposeName[updatedFile]) {
+                                    filesToUpdate = envFileToComposeName[updatedFile]
                                 // Если обновили один из compose-файлов -
                                 // обрабатываем его, если он отслеживается
-                                } else if (f in envFileToComposeName['.env']) {
-                                    filesToUpdate = [f]
+                                } else if (composeFileToVMName[updatedFile]) {
+                                    filesToUpdate = [updatedFile]
                                 }
                                 /* groovylint-disable-next-line NestedForLoop */
                                 for (fileToUpdate in filesToUpdate) {
@@ -242,15 +252,15 @@ pipeline {
                                     // }
                                     // Обновление compose-файла для сервера
                                     /* groovylint-disable-next-line NestedForLoop */
-                                    envFileToComposeName.each { env, cfiles ->
-                                        cfiles.each { cfile ->
-                                            if (cfile == fileToUpdate) {
-                                                sh "a=\$(mktemp) && export \$(cat ${env} | xargs) && envsubst < ${cfile} > \${a} && mv \${a} ${cfile}"
+                                    envFileToComposeName.each { env, updateComposeFiles ->
+                                        updateComposeFiles.each { updateComposeFile ->
+                                            if (updateComposeFile == fileToUpdate) {
+                                                sh "a=\$(mktemp) && export \$(cat ${env} | xargs) && envsubst < ${updateComposeFile} > \${a} && mv \${a} ${updateComposeFile}"
                                             }
                                         }
                                     }
                                     // sh "cat ${fileToUpdate}"
-                                    sh "echo ${params.environment}"
+                                    sh "echo ${fileToUpdate}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
