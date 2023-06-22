@@ -229,7 +229,7 @@ pipeline {
                                     filesToUpdate = envFileToComposeName[f]
                                 // Если обновили один из compose-файлов -
                                 // обрабатываем его, если он отслеживается
-                                } else if (envFileToComposeName[f]) {
+                                } else if (envFileToComposeName.[f]) {
                                     filesToUpdate = [f]
                                 }
                                 /* groovylint-disable-next-line NestedForLoop */
@@ -255,6 +255,7 @@ pipeline {
                                         }
                                     }
                                     sh "cat ${fileToUpdate}"
+                                    sh "cat &=${envFileToComposeName}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
