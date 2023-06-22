@@ -203,7 +203,7 @@ pipeline {
                                 branches: [[ name: versionRef ]],
                                 userRemoteConfigs: [[
                                     credentialsId: "${repositoryKeyFile[env.GITHUB_REPO_NAME]}",
-                                    url: "git@github.com:Sense-Capital/${params.environment}" 
+                                    url: "git@github.com:Sense-Capital/${env.GITHUB_REPO_NAME}" 
                                 ]]
                             ])
                     }
