@@ -7,11 +7,11 @@ versionRef = 'unknown'
 triggeredByWebhook = false
 repoDir = 'automatization'
 allowedBranchesToBuildWebhook = [ 'main' ]
-allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test.git' ]
+allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test' ]
 // Сопоставление env-файла compose файлам
 
 repositoryKeyFile = [
-    'SC.Environment.Test.git': 'SC.Environment.Test-ssh-key'
+    'SC.Environment.Test': 'SC.Environment.Test-ssh-key'
 ]
 
 envFileToComposeName = [
@@ -46,15 +46,15 @@ composeFileToVMName = [
 ]
 
 
-properties([
-    parameters([
-        string(
-            name: 'environment',
-            defaultValue: env.GITHUB_REPO_NAME,
-            description: 'environment repo'
-        ),
-    ]),
-])
+// properties([
+//     parameters([
+//         string(
+//             name: 'environment',
+//             defaultValue: env.GITHUB_REPO_NAME,
+//             description: 'environment repo'
+//         ),
+//     ]),
+// ])
 
 user = 'auto'
 
