@@ -56,7 +56,7 @@ pipeline {
                         }
                         if (updateComposeFile) {
                             build(
-                                job: 'update',
+                                job: 'pipline/update',
                                 wait: false,
                                 propagate: true,
                                 parameters: [
