@@ -22,10 +22,11 @@ allowedBranchesToBuildWebhook = [ 'main' ]
 allowedEnvironmentsRepoToBuildWebhook = [ 'ansible.aws.lightsail' ]
 
 // Сопоставление env-файла compose файлам
-fileForUpdate = [
-    '.env',
-    'docker-compose.yaml',
-    'docker-compose-unity.yaml',    
+envFileToComposeName = [
+    '.env': [
+        'docker-compose.yaml',
+        'docker-compose-unity.yaml'
+    ],
 ]
 
 // Сопоставление compose-файла имени сервера, на котором он развернут
@@ -211,27 +212,26 @@ pipeline {
                         println 'Nothing to do'
                         return
                     }
-                    cmts = readJSON(text: env.GITHUB_COMMITS)
-                    if (cmts.size() == 0) {
+                    commits = readJSON(text: env.GITHUB_COMMITS)
+                    if (commits.size() == 0) {
                         currentBuild.result = 'SUCCESS'
                         println 'Nothing to do'
                         return
                     }
                     dir(repoDir) {
-                        for (commit in cmts) {
+                        for (commit in commits) {
                             files = commit['modified']
                             /* groovylint-disable-next-line NestedForLoop */
                             for (f in files) {
                                 filesToUpdate = []
                                 // Если обновили env-файл - обрабатываем его файлы
-                                if (fileForUpdate[f]) {
-                                    filesToUpdate = fileForUpdate[f]
+                                if (envFileToComposeName[f]) {
+                                    filesToUpdate = envFileToComposeName[f]
                                 // Если обновили один из compose-файлов -
                                 // обрабатываем его, если он отслеживается
-                                } 
-                                // else if (envFileToComposeName[f]) {
-                                //     filesToUpdate = [f]
-                                // }
+                                } else if (envFileToComposeName[0][f]) {
+                                    filesToUpdate = [f]
+                                }
                                 /* groovylint-disable-next-line NestedForLoop */
                                 for (fileToUpdate in filesToUpdate) {
                                     println("Modified file ${fileToUpdate}")
@@ -247,7 +247,7 @@ pipeline {
                                     // }
                                     // Обновление compose-файла для сервера
                                     /* groovylint-disable-next-line NestedForLoop */
-                                    fileForUpdate.each { env, cfiles ->
+                                    envFileToComposeName.each { env, cfiles ->
                                         cfiles.each { cfile ->
                                             if (cfile == fileToUpdate) {
                                                 sh "a=\$(mktemp) && export \$(cat ${env} | xargs) && envsubst < ${cfile} > \${a} && mv \${a} ${cfile}"
@@ -255,7 +255,7 @@ pipeline {
                                         }
                                     }
                                     // sh "cat ${fileToUpdate}"
-                                    sh "cat ${fileForUpdate}"
+                                    sh "echo ${envFileToComposeName[0]}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
