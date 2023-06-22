@@ -12,7 +12,7 @@ versionRef = 'unknown'
 // Is build triggered by webhook.
 triggeredByWebhook = false
 
-automatizationSSHSecret = 'automatization-repo-ssh-key'
+automatizationSSHSecret = 'ansible.aws.lightsail-ssh'
 repoDir = 'automatization'
 user = 'auto'
 
