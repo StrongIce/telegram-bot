@@ -56,7 +56,7 @@ pipeline {
                         }
                         if (updateComposeFile) {
                             build(
-                                job: 'pipline/update',
+                                job: 'tzhenguldinov/update.service',
                                 wait: false,
                                 propagate: true,
                                 parameters: [
