@@ -25,7 +25,7 @@ allowedEnvironmentsRepoToBuildWebhook = [ 'ansible.aws.lightsail' ]
 fileForUpdate = [
     '.env',
     'docker-compose.yaml',
-    'docker-compose-unity.yaml'    
+    'docker-compose-unity.yaml',    
 ]
 
 // Сопоставление compose-файла имени сервера, на котором он развернут
