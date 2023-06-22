@@ -31,8 +31,8 @@ envFileToComposeName = [
 
 // Сопоставление compose-файла имени сервера, на котором он развернут
 composeFileToVMName = [
-    'docker-compose.yaml',
-    'docker-compose-unity.yaml',
+    'docker-compose.yaml': 'd',
+    'docker-compose-unity.yaml': 'd',
     // 'envs/dev-env/docker-compose.yaml': 'dev-server',
     // 'envs/dev-env/docker-compose-unity.yaml': 'dev-server-unity',
     // 'envs/demo-env/docker-compose.yaml': 'demo-unity-server',
@@ -255,7 +255,7 @@ pipeline {
                                         }
                                     }
                                     // sh "cat ${fileToUpdate}"
-                                    sh "echo ${envFileToComposeName[0]}"
+                                    sh "echo ${params.environment_s}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
