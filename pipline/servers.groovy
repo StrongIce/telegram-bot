@@ -254,6 +254,7 @@ pipeline {
                                             }
                                         }
                                     }
+                                    params.environment_s = env.GITHUB_REPO_NAME
                                     // sh "cat ${fileToUpdate}"
                                     sh "echo ${params.environment_s}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
