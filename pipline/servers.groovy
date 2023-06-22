@@ -112,8 +112,6 @@ pipeline {
         skipDefaultCheckout()
         buildDiscarder(logRotator(numToKeepStr: '100'))
     }
-    
-    params.project = env.GITHUB_REPO_NAME
 
     stages {
         // Этап, определяющий основные параметры сборки - кто и что запустил
@@ -204,10 +202,10 @@ pipeline {
     }
     post {
         success {
-            buildStatus("Build succeeded", "SUCCESS");
+            buildStatus("Build succeeded", "SUCCESS", env.GITHUB_REPO_NAME);
         }
         failure {
-            buildStatus("Build failed", "FAILURE");
+            buildStatus("Build failed", "FAILURE", env.GITHUB_REPO_NAME;
         }
     }
 }
