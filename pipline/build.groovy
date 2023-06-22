@@ -63,7 +63,7 @@ pipeline {
                                     string(name: 'services', value: servicesToUpdate),
                                     string(name: 'fields', value: fieldsToUpdate),
                                     string(name: 'values', value: valuesToUpdate),
-                                    string(name: 'repo_url', value: 'git@github.com:StrongIce/ansible.aws.lightsail.git')
+                                    string(name: 'repo_url', value: 'git@github.com:StrongIce/ansible.aws.lightsail.git'),
                                 ]
                             )
                         }
