@@ -50,7 +50,7 @@ properties([
     parameters([
         string(
             name: 'environments',
-            defaultValue: 'env.GITHUB_REPO_NAME',
+            defaultValue: '${env.GITHUB_REPO_NAME}',
             description: 'environment repo'
         ),
     ]),
