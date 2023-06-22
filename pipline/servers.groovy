@@ -189,5 +189,20 @@ pipeline {
                 }
             }
         }
+        stage("test"){
+            steps {
+                script {
+                    sh "echo WORRRRRRLD HELOOOOOOO"
+                }
+            }
+        }
+    }
+    post {
+        success {
+            buildStatus("Build succeeded", "SUCCESS");
+        }
+        failure {
+            buildStatus("Build failed", "FAILURE");
+        }
     }
 }

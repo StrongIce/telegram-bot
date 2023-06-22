@@ -22,54 +22,6 @@ dockerServicesByProject = [
 
 pipeline {
     agent any
-    triggers {
-        GenericTrigger(
-            causeString: 'Generic Cause',
-            genericVariables: [
-                [
-                    defaultValue: '',
-                    key: 'GITHUB_REF',
-                    regexpFilter: '',
-                    value: '$.ref'
-                ],
-                [
-                    defaultValue: '',
-                    key: 'GITHUB_COMMIT_AUTHOR_NAME',
-                    regexpFilter: '',
-                    value: '$.head_commit.author.name'
-                ],
-                [
-                    defaultValue: '',
-                    key: 'GITHUB_COMMIT_AUTHOR_EMAIL',
-                    regexpFilter: '',
-                    value: '$.head_commit.author.email'
-                ],
-                [
-                    defaultValue: '',
-                    key: 'GITHUB_COMMIT_HASH',
-                    regexpFilter: '',
-                    value: '$.head_commit.id'
-                ],
-                [
-                    defaultValue: '',
-                    key: 'GITHUB_REPO_NAME',
-                    regexpFilter: '',
-                    value: '$.repository.name'
-                ],
-                [
-                    defaultValue: '[]',
-                    key: 'GITHUB_COMMITS',
-                    regexpFilter: '',
-                    value: '$.commits'
-                ]
-            ],
-            regexpFilterExpression: '',
-            regexpFilterText: '',
-            token: 'tzhenguldinov',
-            tokenCredentialId: ''
-        )
-    }
-
     stages {
 
         stage('Hello') {
@@ -102,20 +54,20 @@ pipeline {
                         if (CURRENT_BRANCH_NAME =~ /(.*\/master)|(^master)(?=\s|$)/) {
                             updateComposeFile = '.env'
                         }
-                        if (updateComposeFile) {
-                            build(
-                                job: 'tzhenguldinov/update.service',
-                                wait: false,
-                                propagate: true,
-                                parameters: [
-                                    string(name: 'file', value: updateComposeFile),
-                                    string(name: 'services', value: servicesToUpdate),
-                                    string(name: 'fields', value: fieldsToUpdate),
-                                    string(name: 'values', value: valuesToUpdate),
-                                    string(name: 'repo_url', value: url),
-                                ]
-                            )
-                        }
+                        // if (updateComposeFile) {
+                        //     build(
+                        //         job: 'tzhenguldinov/update.service',
+                        //         wait: false,
+                        //         propagate: true,
+                        //         parameters: [
+                        //             string(name: 'file', value: updateComposeFile),
+                        //             string(name: 'services', value: servicesToUpdate),
+                        //             string(name: 'fields', value: fieldsToUpdate),
+                        //             string(name: 'values', value: valuesToUpdate),
+                        //             string(name: 'repo_url', value: url),
+                        //         ]
+                        //     )
+                        // }
                     }
                 }
             }
