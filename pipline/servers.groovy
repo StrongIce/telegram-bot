@@ -1,5 +1,5 @@
 /* groovylint-disable DuplicateNumberLiteral, DuplicateStringLiteral, LineLength, NestedBlockDepth, UnnecessaryGetter */
-library('automatization')
+library('test-library')
 
 // This var will contain result to checkout.
 versionRef = 'unknown'
