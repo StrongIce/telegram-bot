@@ -192,13 +192,6 @@ pipeline {
                 }
             }
         }
-        stage("test"){
-            steps {
-                script {
-                    sh "echo WORRRRRRLD HELOOOOOOO"
-                }
-            }
-        }
 
         stage('SCM') {
             steps {
@@ -216,7 +209,14 @@ pipeline {
                 }
             }
         }
-
+        
+        stage("test"){
+            steps {
+                script {
+                    sh "echo WORRRRRRLD HELOOOOOOO"
+                }
+            }
+        }
     }
 
     post {
