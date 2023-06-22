@@ -7,11 +7,11 @@ versionRef = 'unknown'
 triggeredByWebhook = false
 repoDir = 'automatization'
 allowedBranchesToBuildWebhook = [ 'main' ]
-allowedEnvironmentsRepoToBuildWebhook = [ 'ansible.aws.lightsail' ]
+allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test.git' ]
 // Сопоставление env-файла compose файлам
 
 repositoryKeyFile = [
-    'ansible.aws.lightsail': 'ansible.aws.lightsail-ssh'
+    'SC.Environment.Test.git': 'SC.Environment.Test-ssh-key'
 ]
 
 envFileToComposeName = [
@@ -203,7 +203,7 @@ pipeline {
                                 branches: [[ name: versionRef ]],
                                 userRemoteConfigs: [[
                                     credentialsId: "${repositoryKeyFile[env.GITHUB_REPO_NAME]}",
-                                    url: "git@github.com:StrongIce/${params.environment}"
+                                    url: "git@github.com:Sense-Capital/${params.environment}" 
                                 ]]
                             ])
                     }
@@ -263,9 +263,7 @@ pipeline {
                                             }
                                         }
                                     }
-                                    // sh "cat ${fileToUpdate}"
-                                    sh "echo ${fileToUpdate}"
-                                    sh "echo ${composeFileToVMName[fileToUpdate]}"
+                                    sh "echo ${env.GITHUB_REPO_NAME}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
