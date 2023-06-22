@@ -46,15 +46,15 @@ composeFileToVMName = [
 ]
 
 
-// properties([
-//     parameters([
-//         string(
-//             name: 'environment',
-//             defaultValue: env.GITHUB_REPO_NAME,
-//             description: 'environment repo'
-//         ),
-//     ]),
-// ])
+properties([
+    parameters([
+        string(
+            name: 'environments',
+            defaultValue: 'env.GITHUB_REPO_NAME',
+            description: 'environment repo'
+        ),
+    ]),
+])
 
 user = 'auto'
 
@@ -203,7 +203,7 @@ pipeline {
                                 branches: [[ name: versionRef ]],
                                 userRemoteConfigs: [[
                                     credentialsId: "${repositoryKeyFile[env.GITHUB_REPO_NAME]}",
-                                    url: "git@github.com:Sense-Capital/${env.GITHUB_REPO_NAME}" 
+                                    url: "git@github.com:Sense-Capital/${params.environments}" 
                                 ]]
                             ])
                     }
