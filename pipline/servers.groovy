@@ -5,13 +5,19 @@ versionRef = 'unknown'
 // Is build triggered by webhook.
 triggeredByWebhook = false
 repoDir = 'automatization'
+// Разрешенные ветки
 allowedBranchesToBuildWebhook = [ 'main' ]
-allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test', 'SC.Environment.Demo', 'SC.Environment.Dev']
+// Разрешенные репозитории 
+allowedEnvironmentsRepoToBuildWebhook = [ 
+    'SC.Environment.Test', 'SC.Environment.Demo', 
+    'SC.Environment.Dev' , 'SC.Environment.Prod',
+]
 // SSH ключи для репозиториев 
 repositoryKeyFile = [
-    'SC.Environment.Test': 'SC.Environment.Test-ssh-key',
-    'SC.Environment.Demo': 'SC.Environment.Demo-ssh-key',
-    'SC.Environment.Dev': 'SC.Environment.Dev-ssh-key'
+    'SC.Environment.Test':  'SC.Environment.Test-ssh-key',
+    'SC.Environment.Demo':  'SC.Environment.Demo-ssh-key',
+    'SC.Environment.Dev' :  'SC.Environment.Dev-ssh-key',
+    'SC.Environment.Prod':  'SC.Environment.Prod-ssh-key',
 ]
 // Сопоставление env-файла compose файлам
 envFileToComposeName = [
@@ -32,7 +38,6 @@ envFileToComposeName = [
         'docker-compose-unity.yaml'
     ],
 ]
-
 // Сопоставление compose-файла имени сервера, на котором он развернут
 composeFileToVMName = [
     'test-env/docker-compose.yaml': 'test-backend-service',
