@@ -1,6 +1,5 @@
 /* groovylint-disable DuplicateNumberLiteral, DuplicateStringLiteral, LineLength, NestedBlockDepth, UnnecessaryGetter */
 library('test-library')
-
 // This var will contain result to checkout.
 versionRef = 'unknown'
 // Is build triggered by webhook.
@@ -8,12 +7,11 @@ triggeredByWebhook = false
 repoDir = 'automatization'
 allowedBranchesToBuildWebhook = [ 'main' ]
 allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test' ]
-// Сопоставление env-файла compose файлам
-
+// SSH ключи для репозиториев 
 repositoryKeyFile = [
     'SC.Environment.Test': 'SC.Environment.Test-ssh-key'
 ]
-
+// Сопоставление env-файла compose файлам
 envFileToComposeName = [
     'test-env/.env': [
         'test-env/docker-compose.yaml',
@@ -219,6 +217,15 @@ pipeline {
         stage('Processing files') {
             steps {
                 script {
+                    properties([
+                        parameters([
+                            string(
+                                name: 'environments',
+                                defaultValue: env.GITHUB_REPO_NAME,
+                                description: 'environment repo'
+                            ),
+                        ]),
+                    ])
                     // Получаем список коммитов
                     if (env.GITHUB_COMMITS == null) {
                         currentBuild.result = 'SUCCESS'
@@ -268,6 +275,7 @@ pipeline {
                                         }
                                     }
                                     sh "echo ${env.GITHUB_REPO_NAME}"
+                                    sh "echo ${paramas.environments}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
