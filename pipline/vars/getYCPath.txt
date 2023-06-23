@@ -1,1 +1,0 @@
-Function return path to yc executable file

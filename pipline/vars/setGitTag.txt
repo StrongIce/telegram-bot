@@ -1,3 +1,0 @@
-Function sets git tag and push it to repository. 
-Tag pass to function via tag argument.
-This action must be wrapped into ssh-agent/credentinals provider.

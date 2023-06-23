@@ -1,4 +1,0 @@
-Function return release version string.
-Return value is "${getDate()}.${env.BUILD_ID}"
-If passed 'suffix' argument (Is a second arg), version will be
-"${getDate()}.${env.BUILD_ID}.${suffix}"

@@ -1,1 +1,0 @@
-Function return url to yandex s3 endpoint.

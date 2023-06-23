@@ -1,1 +1,0 @@
-Function login to yandex registry.

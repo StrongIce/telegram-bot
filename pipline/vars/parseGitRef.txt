@@ -1,2 +1,0 @@
-Function check that referenced 'ref' has 'refs/heads' or 'refs/tags' prefix 
-and return ref without prefix.

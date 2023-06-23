@@ -1,1 +1,0 @@
-Function returns yandex registry with id like cr.yandex/${ID?}
