@@ -34,8 +34,8 @@ envFileToComposeName = [
         'demo-env/docker-compose-unity.yaml'
     ],
     'prod-env/.env': [
-        'docker-compose.yaml',
-        'docker-compose-unity.yaml'
+        'prod-env/docker-compose.yaml',
+        'prod-env/docker-compose-unity.yaml'
     ],
 ]
 // Сопоставление compose-файла имени сервера, на котором он развернут
