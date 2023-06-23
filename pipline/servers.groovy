@@ -6,7 +6,7 @@ versionRef = 'unknown'
 triggeredByWebhook = false
 repoDir = 'automatization'
 allowedBranchesToBuildWebhook = [ 'main' ]
-allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test' ]
+allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test', 'ansible.aws.lightsail' ]
 // SSH ключи для репозиториев 
 repositoryKeyFile = [
     'SC.Environment.Test': 'SC.Environment.Test-ssh-key'
@@ -120,6 +120,8 @@ pipeline {
                     if (params.environments) {
                         parsedRepoName = params.environments
                         sh "echo ${parsedRepoName}"
+                    } else {
+                        sh " echo net parametra"
                     }
                     // sh 'env'
                     description = '''
