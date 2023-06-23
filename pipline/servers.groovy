@@ -9,7 +9,8 @@ allowedBranchesToBuildWebhook = [ 'main' ]
 allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test', 'ansible.aws.lightsail' ]
 // SSH ключи для репозиториев 
 repositoryKeyFile = [
-    'SC.Environment.Test': 'SC.Environment.Test-ssh-key'
+    'SC.Environment.Test': 'SC.Environment.Test-ssh-key',
+    'ansible.aws.lightsail': 'ansible.aws.lightsail-ssh'
 ]
 // Сопоставление env-файла compose файлам
 envFileToComposeName = [
