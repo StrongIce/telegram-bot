@@ -117,6 +117,15 @@ pipeline {
         stage('Check params') {
             steps {
                 script {
+                    properties([
+                        parameters([
+                            string(
+                                name: 'environments',
+                                defaultValue: env.GITHUB_REPO_NAME,
+                                description: 'environment repo'
+                            ),
+                        ]),
+                    ])
                     // sh 'env'
                     description = '''
                         <ul style="margin:0px;padding-left:10px">
@@ -150,6 +159,10 @@ pipeline {
                         if (!(parsedRepoName in allowedEnvironmentsRepoToBuildWebhook)) {
                             buildAborted = true
                             buildAbortedMsg = parsedRepoName
+                        }
+                        if (!(paramas.environments in allowedEnvironmentsRepoToBuildWebhook)) {
+                            buildAborted = true
+                            buildAbortedMsg = paramas.environments
                         }
                         // Определяем версию - это либо тег, либо первые 8 символов коммит-хэша
                         versionRef = isTagRef(env.GITHUB_REF) ? parsedRef : env.GITHUB_COMMIT_HASH.take(8)
@@ -217,15 +230,6 @@ pipeline {
         stage('Processing files') {
             steps {
                 script {
-                    properties([
-                        parameters([
-                            string(
-                                name: 'environments',
-                                defaultValue: env.GITHUB_REPO_NAME,
-                                description: 'environment repo'
-                            ),
-                        ]),
-                    ])
                     // Получаем список коммитов
                     if (env.GITHUB_COMMITS == null) {
                         currentBuild.result = 'SUCCESS'
