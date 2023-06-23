@@ -145,9 +145,13 @@ pipeline {
                         parsedRepoName = env.GITHUB_REPO_NAME
                         // Если сборка с ветки и ветка не находится в
                         // списке разрешенных - останавливаем сборку
-                        if (!(parsedRef in allowedBranchesToBuildWebhook) && !(parsedRepoName in allowedEnvironmentsRepoToBuildWebhook) && !(isTagRef(env.GITHUB_REF))) {
+                        if (!(parsedRef in allowedBranchesToBuildWebhook) && !(isTagRef(env.GITHUB_REF))) {
                             buildAborted = true
                             buildAbortedMsg = parsedRef
+                        }
+                        if (!(parsedRepoName in allowedEnvironmentsRepoToBuildWebhook)) {
+                            buildAborted = true
+                            buildAbortedMsg = parsedRepoName
                         }
                         // Определяем версию - это либо тег, либо первые 8 символов коммит-хэша
                         versionRef = isTagRef(env.GITHUB_REF) ? parsedRef : env.GITHUB_COMMIT_HASH.take(8)
