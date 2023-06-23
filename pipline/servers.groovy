@@ -117,12 +117,6 @@ pipeline {
         stage('Check params') {
             steps {
                 script {
-                    if (params.environments) {
-                        parsedRepoName = params.environments
-                        sh "echo ${parsedRepoName}"
-                    } else {
-                        sh " echo net parametra"
-                    }
                     // sh 'env'
                     description = '''
                         <ul style="margin:0px;padding-left:10px">
@@ -139,10 +133,28 @@ pipeline {
                             echo 'User not in scope, probably triggered from another job'
                         }
                     }
-
+                    // Проверка что запускается правильная репа с енвами 
+                    // Если репо нет в списке разрешенных остановка сборки 
+                    if (params.environments) {
+                        parsedRepoName = params.environments
+                        sh "echo ${parsedRepoName}"
+                        if (!(parsedRepoName in allowedEnvironmentsRepoToBuildWebhook)) {
+                            buildAborted = true
+                            buildAbortedMsg = parsedRepoName
+                        }
+                    }
                     // Если сборка запускается вебхуком -
                     // определяюются переменные окружения.
                     // Проверяем что запустились с события push
+                    if (env.GITHUB_REPO_NAME) {
+                        // Проверка репозитория можно запускать лишь с определенных реп 
+                        // Если репо нет в списке разрешенных остановка сборки 
+                        parsedRepoName = env.GITHUB_REPO_NAME
+                        if (!(parsedRepoName in allowedEnvironmentsRepoToBuildWebhook)) {
+                            buildAborted = true
+                            buildAbortedMsg = parsedRepoName
+                        }
+                    }
                     if (env.GITHUB_REF) {
                         // Определяем ветку/тег с которого собирается
                         parsedRef = parseGitRef(env.GITHUB_REF)
@@ -152,10 +164,6 @@ pipeline {
                         if (!(parsedRef in allowedBranchesToBuildWebhook) && !(isTagRef(env.GITHUB_REF))) {
                             buildAborted = true
                             buildAbortedMsg = parsedRef
-                        }
-                        if (!(parsedRepoName in allowedEnvironmentsRepoToBuildWebhook)) {
-                            buildAborted = true
-                            buildAbortedMsg = parsedRepoName
                         }
                         // Определяем версию - это либо тег, либо первые 8 символов коммит-хэша
                         versionRef = isTagRef(env.GITHUB_REF) ? parsedRef : env.GITHUB_COMMIT_HASH.take(8)
@@ -210,8 +218,8 @@ pipeline {
                             ([$class: 'GitSCM',
                                 branches: [[ name: versionRef ]],
                                 userRemoteConfigs: [[
-                                    credentialsId: "${repositoryKeyFile[env.GITHUB_REPO_NAME]}",
-                                    url: "git@github.com:Sense-Capital/${env.GITHUB_REPO_NAME}" 
+                                    credentialsId: "${repositoryKeyFile[parsedRepoName]}",
+                                    url: "git@github.com:Sense-Capital/${parsedRepoName}" 
                                 ]]
                             ])
                     }
@@ -271,7 +279,7 @@ pipeline {
                                             }
                                         }
                                     }
-                                    sh "echo ${env.GITHUB_REPO_NAME}"
+                                    sh "echo ${parsedRepoName}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
