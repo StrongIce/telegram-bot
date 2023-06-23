@@ -44,15 +44,15 @@ composeFileToVMName = [
 ]
 
 
-// properties([
-//     parameters([
-//         string(
-//             name: 'environments',
-//             defaultValue: env.GITHUB_REPO_NAME,
-//             description: 'environment repo'
-//         ),
-//     ]),
-// ])
+properties([
+    parameters([
+        string(
+            name: 'environments',
+            defaultValue: '',
+            description: 'environment repo name'
+        ),
+    ]),
+])
 
 user = 'auto'
 
@@ -117,15 +117,10 @@ pipeline {
         stage('Check params') {
             steps {
                 script {
-                    properties([
-                        parameters([
-                            string(
-                                name: 'environments',
-                                defaultValue: env.GITHUB_REPO_NAME,
-                                description: 'environment repo'
-                            ),
-                        ]),
-                    ])
+                    if (params.environments) {
+                        parsedRepoName = params.environments
+                        sh "echo parsedRepoName"
+                    }
                     // sh 'env'
                     description = '''
                         <ul style="margin:0px;padding-left:10px">
@@ -159,10 +154,6 @@ pipeline {
                         if (!(parsedRepoName in allowedEnvironmentsRepoToBuildWebhook)) {
                             buildAborted = true
                             buildAbortedMsg = parsedRepoName
-                        }
-                        if (!(paramas.environments in allowedEnvironmentsRepoToBuildWebhook)) {
-                            buildAborted = true
-                            buildAbortedMsg = paramas.environments
                         }
                         // Определяем версию - это либо тег, либо первые 8 символов коммит-хэша
                         versionRef = isTagRef(env.GITHUB_REF) ? parsedRef : env.GITHUB_COMMIT_HASH.take(8)
@@ -279,7 +270,6 @@ pipeline {
                                         }
                                     }
                                     sh "echo ${env.GITHUB_REPO_NAME}"
-                                    sh "echo ${paramas.environments}"
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
