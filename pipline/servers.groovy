@@ -6,11 +6,11 @@ versionRef = 'unknown'
 triggeredByWebhook = false
 repoDir = 'automatization'
 allowedBranchesToBuildWebhook = [ 'main' ]
-allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test', 'ansible.aws.lightsail' ]
+allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test', 'SC.Environment.Demo']
 // SSH ключи для репозиториев 
 repositoryKeyFile = [
     'SC.Environment.Test': 'SC.Environment.Test-ssh-key',
-    'ansible.aws.lightsail': 'ansible.aws.lightsail-ssh'
+    'SC.Environment.Demo': 'SC.Environment.Demo-ssh-key'
 ]
 // Сопоставление env-файла compose файлам
 envFileToComposeName = [
@@ -104,7 +104,7 @@ pipeline {
             ],
             regexpFilterExpression: '',
             regexpFilterText: '',
-            token: 'tzhenguldinov',
+            token: 'environments',
             tokenCredentialId: ''
         )
     }
@@ -280,7 +280,7 @@ pipeline {
                                             }
                                         }
                                     }
-                                    sh "echo ${parsedRepoName}"
+                                    sh 'echo test'
                                     // sh "${getYCPath()} compute instance update-container --name ${composeFileToVMName[fileToUpdate]} --docker-compose-file ${fileToUpdate}"
                                     // println("${getYCPath()} compute instance update-container --name ${composeFileToVMName[f]} --docker-compose-file ${f}")
                                 }
