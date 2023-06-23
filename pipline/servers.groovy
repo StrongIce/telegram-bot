@@ -6,11 +6,12 @@ versionRef = 'unknown'
 triggeredByWebhook = false
 repoDir = 'automatization'
 allowedBranchesToBuildWebhook = [ 'main' ]
-allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test', 'SC.Environment.Demo']
+allowedEnvironmentsRepoToBuildWebhook = [ 'SC.Environment.Test', 'SC.Environment.Demo', 'SC.Environment.Dev']
 // SSH ключи для репозиториев 
 repositoryKeyFile = [
     'SC.Environment.Test': 'SC.Environment.Test-ssh-key',
-    'SC.Environment.Demo': 'SC.Environment.Demo-ssh-key'
+    'SC.Environment.Demo': 'SC.Environment.Demo-ssh-key',
+    'SC.Environment.Dev': 'SC.Environment.Dev-ssh-key'
 ]
 // Сопоставление env-файла compose файлам
 envFileToComposeName = [
