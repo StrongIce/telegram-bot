@@ -119,7 +119,7 @@ pipeline {
                 script {
                     if (params.environments) {
                         parsedRepoName = params.environments
-                        sh "echo parsedRepoName"
+                        sh "echo ${parsedRepoName}"
                     }
                     // sh 'env'
                     description = '''
