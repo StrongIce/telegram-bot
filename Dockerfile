@@ -2,12 +2,8 @@ FROM ubuntu:20.04
 
 ENV TZ=Asia/Novosibirsk
 
-RUN apt-get update -y \
-    && apt install -y python3 \
-    && python3-pip \
-    && python3-dev \
-    && libldap2-dev \
-    && libsasl2-dev 
+RUN apt update -y \
+    && apt install -y python3 python3-pip python3-dev libldap2-dev libsasl2-dev 
 
 RUN mkdir /opt/jira-bot
 
